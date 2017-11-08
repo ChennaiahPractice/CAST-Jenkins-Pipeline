@@ -1,3 +1,6 @@
+# Example of Jenkinsfile - do not refernce directly
+# Move this file to Github repository and update as needed
+
 node ('CAST-Analysis-Server') {
     stage ('CAST Analysis') {
         git credentialsId: '6fca6e6a-2db0-4c2d-abec-513591c993e7', url: 'https://github.com/prabinovich/CAST-Jenkins-Pipeline.git'
