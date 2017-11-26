@@ -8,7 +8,7 @@ SHIFT /1
 GOTO parse
 :endparse
 
-set cli=C:/Program Files/CAST/8.0/CAST-MS-cli.exe
+set cli=C:/Program Files/CAST/8.2/CAST-MS-cli.exe
 set log=c:/cast/logs
 
 if not defined profile (echo 'profile' parameter not provided) & goto ErrorExit
