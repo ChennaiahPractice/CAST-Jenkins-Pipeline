@@ -22,7 +22,7 @@ def check_rule(_rule, _app,  auth, apiurl):
  
     if _rule == "new_vs_old":
         RESTCALL = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_app + ')'
-        print('RESTCALL: ', RESTCALL)
+        print('REST CALL: ', apiurl+RESTCALL)
         try:
             data = requests.get(apiurl+RESTCALL, headers = headers, auth=auth, verify=False)
             BUS_CRITERIA = data.json()
