@@ -144,7 +144,7 @@ if __name__ == "__main__":
     curr_dir = os.getcwd()
     overridepath = curr_dir
     parser = argparse.ArgumentParser(description="""\n\nCAST Blocking Rule Check - \n Reads RestAPI, Pulls scores, runs a test and returns 0 if all is ok, and 10 if not""")
-    parser.add_argument('-a', '--appname', action='store', dest='app_name', required=true,
+    parser.add_argument('-a', '--appname', action='store', dest='app_name', required=True,
                         help='Name of the target application as shown in AAD')		
     parser.add_argument('-r', '--rule', action='store', dest='rule', required=False, default="new_vs_old",
                         choices=['new_vs_old', 'TQI_change'],
