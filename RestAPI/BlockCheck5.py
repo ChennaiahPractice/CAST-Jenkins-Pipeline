@@ -10,7 +10,7 @@ def check_rule(_apiurl, _auth, _appname, _rule):
     _headers = {'Accept':'application/json'}
 
     if _rule == "new_vs_old":
-        _resturi = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_app + ')'
+        _resturi = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_appname + ')'
      
         try:
             print('Credentials: ', _auth)
