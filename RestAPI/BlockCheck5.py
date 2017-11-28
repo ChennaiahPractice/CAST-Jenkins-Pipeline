@@ -17,14 +17,16 @@ def check_rule(_apiurl, _auth, _appname, _rule):
             print('Rest Call: ', _apiurl+'/'+_resturi)
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False)
             BUS_CRITERIA = _data.json()
-        except:
-            print('Failed on RESTAPI')
-            return(200)
+        except Exception,e:
+            print('Exception occured')
+            print(e)
+            return(2)
         try:
             _results = (BUS_CRITERIA[0])
-        except IndexError:
-            print("Likely invalid application name")
-            return(100)             
+        except Exception,e:
+            print('Exception occured')
+            print(e)
+            return(2)             
         _data = _results.get('applicationResults')
         _results = _data[0].get('result')
         _added =    _results.get('evolutionSummary').get('addedCriticalViolations')
@@ -34,11 +36,11 @@ def check_rule(_apiurl, _auth, _appname, _rule):
             print(str(_added) + ' were added and ' + str(_removed) + ' were removed')
             return(0)
         else:
-            print('build failed')
-            return(10)       
+            print('CAST AIP flagged violations in build')
+            return(1)      
     else:
-        print("invalid rule - failing")
-        return(10)
+        print("Incorrect arguments - unknown rule specified")
+        return(2)
 
 
 if __name__ == "__main__":
