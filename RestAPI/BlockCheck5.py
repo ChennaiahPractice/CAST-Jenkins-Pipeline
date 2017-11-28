@@ -13,8 +13,8 @@ def check_rule(_apiurl, _auth, _appname, _rule):
         _resturi = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_app + ')'
      
         try:
-	    print('Credentials: ', _auth)
-	    print('Rest Call: ', _apiurl+_resturi)
+            print('Credentials: ', _auth)
+            print('Rest Call: ', _apiurl+_resturi)
             _data = requests.get(_apiurl+_resturi, headers=_headers, auth=_auth, verify=False)
             BUS_CRITERIA = _data.json()
         except:
