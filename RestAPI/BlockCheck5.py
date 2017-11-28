@@ -17,13 +17,13 @@ def check_rule(_apiurl, _auth, _appname, _rule):
             print('Rest Call: ', _apiurl+'/'+_resturi)
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False)
             BUS_CRITERIA = _data.json()
-        except Exception,e:
+        except Exception as e:
             print('Exception occured')
             print(e)
             return(2)
         try:
             _results = (BUS_CRITERIA[0])
-        except Exception,e:
+        except Exception as e:
             print('Exception occured')
             print(e)
             return(2)             
