@@ -12,15 +12,15 @@ def check_rule(_apiurl, _auth, _appname, _rule):
     if _rule == "new_vs_old":
         _resturi = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_appname + ')'
      
-        #try:
-        print('Credentials: ', _auth)
-        print('Rest Call: ', _apiurl+'/'+_resturi)
-        _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
-        BUS_CRITERIA = _data.json()
-        #except Exception as e:
-        #    print('Exception occured')
-        #    print(e)
-        #    return(2)
+        try:
+            print('Credentials: ', _auth)
+            print('Rest Call: ', _apiurl+'/'+_resturi)
+            _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
+            BUS_CRITERIA = _data.json()
+        except Exception as e:
+            print('Exception occured')
+            print(e)
+            return(2)
         try:
             _results = (BUS_CRITERIA[0])
         except Exception as e:
