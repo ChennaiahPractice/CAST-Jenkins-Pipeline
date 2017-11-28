@@ -17,6 +17,9 @@ __status__ = "Demonstrator"
 __date__ = '2017-6-22'
 __updated__ = '2017-6-22'
 
+# update configurations as appropriate
+_connection_ = 'http://34.205.9.185:8080/CAST-AAD-AED/rest/'
+_auth_ = ('cast', 'cast')
 
 import os
 import logging
@@ -26,16 +29,13 @@ import requests
 
 BUS_CRITERIA = {}
 
-
-
-
-def setup_logging(APP_NAME, _console='info'):
+def setup_logging(app_name, _console='info'):
     """ Initialization of the logging capability """
     # *******************************************************************
     # Step 2: create the log file
     # *******************************************************************
-    _logname='blocker-' + APP_NAME
-    
+    _logname='blocker-' + app_name
+
     try:
         with open(_logname, 'w'):
             pass
@@ -67,14 +67,6 @@ def xml_add_vs_delete(_added, _removed, _reportname):
     report.write("<field name='Violations Added' titlecolor='black' value='"+str(_added) + "'></field>\n")
     report.write("<field name='Violations Removed' titlecolor='black' value='"+str(_removed) + "'></field>\n")
     report.write("</section>")
-	
-#    report.write('The criteria failed because the number of violations added in this snapshot')
-#    report.write("\n")
-#    report.write("exceeded or equaled the number removed. This is not an improvement in the quality ")
-#    report.write("\n")
-#    report.write("and should be avoided. There were "+str(_added) + " violations added, and "+str(_removed)+ " removed.")
-#    report.write("\n")
-#    report.write("It is recommended that the deploy process stop until some of the violations are rectified.")
     report.close()
 
 def start_logging():
@@ -86,8 +78,7 @@ def start_logging():
 def check_rule(_rule, _app,  auth, apiurl):
     """ put the logic in here """
     headers = {'Accept':'application/json'}
-  
-#    apiurl = 'http://demo-us.castsoftware.com/AAD/rest/'
+
     logging.info('->' +str( headers) + ' ->' + str(apiurl))
     logging.info('Rule is :' + str(_rule))
     _reportname = 'results.xml'
@@ -100,7 +91,7 @@ def check_rule(_rule, _app,  auth, apiurl):
         RESTCALL = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_app + ')'
         logging.info(RESTCALL)        
         try:
-            data = requests.get(apiurl+RESTCALL, headers = headers, auth=auth)
+            data = requests.get(apiurl+RESTCALL, headers = headers, auth=auth, verify=False)
             BUS_CRITERIA = data.json()
         except:
             logging.error('Failed on RESTAPI')
@@ -126,13 +117,13 @@ def check_rule(_rule, _app,  auth, apiurl):
     if _rule == "TQI_change":
         try:
             RESTCALL = "AAD/applications"
-            data = requests.get(apiurl+RESTCALL, headers = headers, auth=auth)
+            data = requests.get(apiurl+RESTCALL, headers = headers, auth=auth, verify=False)
             BUS_CRITERIA = data.json()
 
         except:
             logging.error('Failed on RESTAPI')  
         
-#        logging.info(pp.pprint(BUS_CRITERIA))
+        logging.info(pp.pprint(BUS_CRITERIA))
         _results = (BUS_CRITERIA[0])
         _added =    _results.get('result').get('applicationResults').get('evolutionSummary').get('addedCriticalViolations')
         _removed =  _results.get('result').get('applicationResults').get('evolutionSummary').get('removedCriticalViolations')
@@ -145,23 +136,16 @@ def check_rule(_rule, _app,  auth, apiurl):
     else:
         logging.error("invalid rule - failing")
         return(10)              
-            
-        
+
 
 if __name__ == "__main__":
     """ Access RESTAPI, then check results """
     apiurl = ''
-    Curr_dir = os.getcwd()
-    overridepath = Curr_dir
+    curr_dir = os.getcwd()
+    overridepath = curr_dir
     parser = argparse.ArgumentParser(description="""\n\nCAST Blocking Rule Check - \n Reads RestAPI, Pulls scores, runs a test and returns 0 if all is ok, and 10 if not""")
-    parser.add_argument('-a', '--aadname', action='store', dest='aad_name', default='Webgoat', required=False,
-                        help='Name of the target application as shown in AAD')
-    parser.add_argument('-u', '--userid', action='store', dest='userid', required=False, default='cast',
-                        help='Userid with authorization to run')
-    parser.add_argument('-p', '--password', action='store', dest='password', required=False, default='cast',
-                        help='password matching uid') 
-    parser.add_argument('-c', '--connection', action='store', dest='connection', required=False, default='http://localhost:8080/CAST-AAD-823/rest/',
-                        help='connection string e.g. http://localhost:8090/CAST-AAD/rest/')    						
+    parser.add_argument('-a', '--appname', action='store', dest='app_name', required=true,
+                        help='Name of the target application as shown in AAD')		
     parser.add_argument('-r', '--rule', action='store', dest='rule', required=False, default="new_vs_old",
                         choices=['new_vs_old', 'TQI_change'],
                         help='Pre-defined rule number that will be evaluated for success')
@@ -170,13 +154,13 @@ if __name__ == "__main__":
                         help='Show log on the console when set to debug')
     parser.add_argument('-v','--version', action='version', version='%(prog)s 1.0')
     results = parser.parse_args()
-    APP_NAME = results.aad_name
-    setup_logging(APP_NAME, results.ext_log)
-    start_logging()
-    auth = (results.userid, results.password)
+
     _rule = results.rule
-    connection = results.connection
-    _result_code = check_rule(_rule, APP_NAME, auth, connection)
+    app_name = results.app_name
+
+    setup_logging(app_name, results.ext_log)
+    start_logging()
+
+    _result_code = check_rule(_rule, app_name, _auth_, _connection_)
     logging.info('exit code is ' + str(_result_code))
     sys.exit(_result_code)
-
