@@ -28,7 +28,7 @@ def check_rule(_rule, _app,  auth, apiurl):
             BUS_CRITERIA = data.json()
         except:
             print('Failed on RESTAPI')
-	    return(200)
+            return(200)
         try:
             _results = (BUS_CRITERIA[0])
         except IndexError:
