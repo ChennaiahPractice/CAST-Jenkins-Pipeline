@@ -1,118 +1,48 @@
 # Python 
-""" read the CAST statistics, net out the violations, and then generate a return code."""
-#*****************************************************************************************
-# Rather simple - uses the batch file to extract the RESTAPI
-# then evaluate the results 
-# only one rule now (1) but more possible
-#*****************************************************************************************
-
-__author__ = "Bill Dickenson"
-__copyright__ = "Copyright 2017, CAST Software"
-__credits__ = ["Nevin Kaplan", "Yun Liu"]
-__license__ = "GPL"
-__version__ = "1.0a"
-__maintainer__ = "Bill Dickenson"
-__email__ = "WDI"
-__status__ = "Demonstrator"
-__date__ = '2017-6-22'
-__updated__ = '2017-6-22'
 
 # update configurations as appropriate
 _connection_ = 'http://34.205.9.185:8080/CAST-AAD-AED/rest/'
 _auth_ = ('cast', 'cast')
 
 import os
-import logging
 import sys
 import argparse
 import requests
 
 BUS_CRITERIA = {}
 
-def setup_logging(app_name, _console='info'):
-    """ Initialization of the logging capability """
-    # *******************************************************************
-    # Step 2: create the log file
-    # *******************************************************************
-    _logname='blocker-' + app_name
-
-    try:
-        with open(_logname, 'w'):
-            pass
-        #    logging.basicConfig(filename=logname, filemode='a',format='%(asctime)s,%(msecs)d %(name)s,
-        #    %(levelname)s %(message)s', datefmt='%H:%M:%S', level=logging.CST_Debug)
-
-        logging.root.handlers = []
-        if _console == "debug":
-            logging.basicConfig(format='%(asctime)s, %(msecs)d %(name)s, %(levelname)s %(message)s', level=logging.DEBUG,
-                                filename=_logname, filemode='a', datefmt='%H:%M:%S')
-            # set up logging to console
-            console = logging.StreamHandler()
-            console.setLevel(logging.DEBUG)
-            # set a format which is simpler for console use
-            formatter = logging.Formatter('%(asctime)s : %(levelname)s : %(message)s')
-            console.setFormatter(formatter)
-            logging.getLogger("").addHandler(console)
-        else:
-            logging.basicConfig(format='%(asctime)s,%(msecs)d %(name)s, %(levelname)s %(message)s', level=logging.INFO,
-                                filename=_logname, filemode='a', datefmt='%H:%M:%S')
-    except IOError:
-        print("Logging failed to initialize")
-        sys.exit(13)
-
-def xml_add_vs_delete(_added, _removed, _reportname):
-    """ Simple report showing what was wrong"""
-    report = open(_reportname, 'w')
-    report.write('<section name="Violation Summary" fontcolor="#ffffff">\n')
-    report.write("<field name='Violations Added' titlecolor='black' value='"+str(_added) + "'></field>\n")
-    report.write("<field name='Violations Removed' titlecolor='black' value='"+str(_removed) + "'></field>\n")
-    report.write("</section>")
-    report.close()
-
-def start_logging():
-    """ Once logging is set up there is some information we want in the logs"""
-    logging.info("Starting CAST Blocker Check - Logging is now engaged")
-    logging.info("version " + str(__version__))
-    return(0)
-
 def check_rule(_rule, _app,  auth, apiurl):
     """ put the logic in here """
     headers = {'Accept':'application/json'}
 
-    logging.info('->' +str( headers) + ' ->' + str(apiurl))
-    logging.info('Rule is :' + str(_rule))
-    _reportname = 'results.xml'
-    with open(_reportname, 'w'):
-        pass
+    print('->' +str( headers) + ' ->' + str(apiurl))
+    print('Rule is :' + str(_rule))
 
-    logging.info(auth)
+    print('Credentials: ', auth)
  
     if _rule == "new_vs_old":
         RESTCALL = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_app + ')'
-        logging.info(RESTCALL)        
+        print('RESTCALL: ', RESTCALL)
         try:
             data = requests.get(apiurl+RESTCALL, headers = headers, auth=auth, verify=False)
             BUS_CRITERIA = data.json()
         except:
-            logging.error('Failed on RESTAPI')
-#        logging.info(pp.pprint(BUS_CRITERIA))
+            print('Failed on RESTAPI')
         try:
             _results = (BUS_CRITERIA[0])
         except IndexError:
-            logging.error("Likely invalid application name")
+            print("Likely invalid application name")
             return(100)             
         _data = _results.get('applicationResults')
         _results = _data[0].get('result')
         _added =    _results.get('evolutionSummary').get('addedCriticalViolations')
         _removed =  _results.get('evolutionSummary').get('removedCriticalViolations')
-        logging.info(str(_added) + ' violations added, and  ' + str(_removed) + ' were removed')
+        print(str(_added) + ' violations added, and  ' + str(_removed) + ' were removed')
         if _added <= _removed:
-            logging.info(str(_added) + ' were added and ' + str(_removed) + ' were removed')
-            xml_add_vs_delete(_added, _removed,_reportname)     
+            print(str(_added) + ' were added and ' + str(_removed) + ' were removed')
             return(0)
         else:
-            logging.info('build failed')
-            xml_add_vs_delete(_added, _removed,_reportname)     
+            print('build failed')
             return(10)
     if _rule == "TQI_change":
         try:
@@ -121,9 +51,9 @@ def check_rule(_rule, _app,  auth, apiurl):
             BUS_CRITERIA = data.json()
 
         except:
-            logging.error('Failed on RESTAPI')  
+            print('Failed on RESTAPI')  
         
-        logging.info(pp.pprint(BUS_CRITERIA))
+        print(pp.pprint(BUS_CRITERIA))
         _results = (BUS_CRITERIA[0])
         _added =    _results.get('result').get('applicationResults').get('evolutionSummary').get('addedCriticalViolations')
         _removed =  _results.get('result').get('applicationResults').get('evolutionSummary').get('removedCriticalViolations')
@@ -134,7 +64,7 @@ def check_rule(_rule, _app,  auth, apiurl):
         else:
             return(10)        
     else:
-        logging.error("invalid rule - failing")
+        print("invalid rule - failing")
         return(10)              
 
 
@@ -158,9 +88,6 @@ if __name__ == "__main__":
     _rule = results.rule
     app_name = results.app_name
 
-    setup_logging(app_name, results.ext_log)
-    start_logging()
-
     _result_code = check_rule(_rule, app_name, _auth_, _connection_)
-    logging.info('exit code is ' + str(_result_code))
+    print('exit code is ' + str(_result_code))
     sys.exit(_result_code)
