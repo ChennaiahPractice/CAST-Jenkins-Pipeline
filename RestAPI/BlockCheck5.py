@@ -16,15 +16,22 @@ def check_rule(_apiurl, _auth, _appname, _rule):
         try:
             print('Credentials: ', _auth)
             print('Rest Call: ', _apiurl+'/'+_resturi)
+            print('First attempt to connect')
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
             BUS_CRITERIA = _data.json()
-        except requests.exceptions.RequestException as e:
+        except Exception as e:
             print('Exception occured')
             print(e)
-            #time.sleep(5)
-            return(2)
-            #_data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
-            #BUS_CRITERIA = _data.json()
+            print('Sleep for 5 seconds... zzzz')
+            time.sleep(5)
+            print('Try connecting again...')
+            try:
+                _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
+                BUS_CRITERIA = _data.json()
+            except Exception as e:
+                print('Exception occured again; final attempt failed')
+                print(e)
+                return(2)
         try:
             _results = (BUS_CRITERIA[0])
         except Exception as e:
