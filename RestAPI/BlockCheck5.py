@@ -16,12 +16,12 @@ def check_rule(_apiurl, _auth, _appname, _rule):
         try:
             print('Credentials: ', _auth)
             print('Rest Call: ', _apiurl+'/'+_resturi)
-            print('First attempt to connect')
+            print('First attempt to connect...')
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
             print('First attempt succeeded!')
             BUS_CRITERIA = _data.json()
         except Exception as e:
-            print('Exception occured')
+            print('First attempt to connect failed. Exception occured.')
             print(e)
             print('Sleep for 5 seconds... zzzz')
             time.sleep(5)
@@ -31,7 +31,7 @@ def check_rule(_apiurl, _auth, _appname, _rule):
                 print('Second and final attempt succeeded!')
                 BUS_CRITERIA = _data.json()
             except Exception as e:
-                print('Exception occured again; final attempt failed')
+                print('Second attempt to connect failed. Exception occured again.')
                 print(e)
                 return(2)
         try:
