@@ -21,10 +21,10 @@ def check_rule(_apiurl, _auth, _appname, _rule):
         except Exception as e:
             print('Exception occured')
             print(e)
-            time.sleep(5)
-            #return(2)
-            _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
-            BUS_CRITERIA = _data.json()
+            #time.sleep(5)
+            return(2)
+            #_data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
+            #BUS_CRITERIA = _data.json()
         try:
             _results = (BUS_CRITERIA[0])
         except Exception as e:
