@@ -18,6 +18,7 @@ def check_rule(_apiurl, _auth, _appname, _rule):
             print('Rest Call: ', _apiurl+'/'+_resturi)
             print('First attempt to connect')
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
+            print('First attempt succeeded!')
             BUS_CRITERIA = _data.json()
         except Exception as e:
             print('Exception occured')
@@ -27,6 +28,7 @@ def check_rule(_apiurl, _auth, _appname, _rule):
             print('Try connecting again...')
             try:
                 _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
+                print('Second and final attempt succeeded!')
                 BUS_CRITERIA = _data.json()
             except Exception as e:
                 print('Exception occured again; final attempt failed')
