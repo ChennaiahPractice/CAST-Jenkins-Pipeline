@@ -8,12 +8,12 @@ SHIFT /1
 GOTO parse
 :endparse
 
-set cli=C:/Program Files/CAST/8.2/CAST-MS-cli.exe
-set log=c:/cast/logs
-
 if not defined profile (echo 'profile' parameter not provided) & goto ErrorExit
 if not defined app (echo 'app' parameter not provided) & goto ErrorExit
 if not defined version (echo 'version' parameter not provided) & goto ErrorExit
+
+set cli=C:/Program Files/CAST/8.2.8/CAST-MS-cli.exe
+set log=c:/cast/logs/%app%
 
 set snapshot=%date:~-4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%
 set snapshot2=%snapshot: =0%
