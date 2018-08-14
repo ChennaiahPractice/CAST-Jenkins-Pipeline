@@ -17,7 +17,9 @@ set log=c:/cast/logs/%app%
 
 set snapshot=%date:~-4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%
 set snapshot2=%snapshot: =0%
-set capture=%date:~-4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%
+rem 8.0 uses YYYYMMDDHHMMSS format for the capture date
+rem 8.2 and above uses yyyyMMddHHmm format (no seconds)
+set capture=%date:~-4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%
 set capture2=%capture: =0%
 
 "%cli%" GenerateSnapshot -connectionProfile %profile% -appli %app% -snapshot "Computed on %snapshot2%" -captureDate %capture2% -version "%version%" -logRootPath %log%
