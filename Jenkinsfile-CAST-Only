@@ -1,0 +1,27 @@
+node ('master') {
+    stage ('CAST - Get Code') {
+        dir('CAST-Scripts') {
+           git branch: 'master', credentialsId: 'Github-prabinovich', url: 'https://github.com/prabinovich/CAST-Jenkins-Pipeline.git'
+        }
+        dir('Webstore') {
+           git credentialsId: 'Github-prabinovich', url: 'https://github.com/prabinovich/WebStore.git'
+        }
+    }
+    
+    /*
+    stage ('CAST - Packaging') {
+        echo '-- Packaging and Delivery of Source Code --'
+        bat '%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
+    }
+    
+    stage ('CAST - Analysis') {
+        echo '-- Analyze Application --'
+        bat '%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_Analyze.bat "profile=sandbox838" "app=Webstore"'
+    }
+    
+    stage ('CAST - Snapshot') {
+        echo '-- Generate Snapshot --'
+        bat '%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_GenerateSnapshot.bat "profile=sandbox838" "app=Webstore" "version=version %BUILD_NUMBER%"'
+    }
+    */
+}
