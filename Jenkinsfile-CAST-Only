@@ -27,8 +27,13 @@ node ('master') {
     
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
-        bat "\"C:\\Program Files\\CAST\\8.3\\AAD\\CLI\\AadConsolidation.exe\" -url jdbc:postgresql://localhost:2282/postgres -schema sandbox838_measure -password CastAIP -remote_url jdbc:postgresql://localhost:2282/postgres -remote_schema sandbox838_central -remote_password CastAIP"
-        bat "curl.exe -u admin:admin -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
+        withCredentials([usernamePassword(credentialsId: 'CAST-DB-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
+            bat "\"C:\\Program Files\\CAST\\8.3\\AAD\\CLI\\AadConsolidation.exe\" -url jdbc:postgresql://localhost:2282/postgres -schema sandbox838_measure -password ${PWd1} -remote_url jdbc:postgresql://localhost:2282/postgres -remote_schema sandbox838_central -remote_password ${PWd1}"
+        }
+        
+        withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
+            bat "curl.exe -u ${USR1}:${PWd1} -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
+        }
     }
 
 }
