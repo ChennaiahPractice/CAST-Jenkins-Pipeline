@@ -27,7 +27,7 @@ node ('master') {
     
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
-        bat "\"C:\\Program Files\\CAST\\8.3\\AAD\\CLI\\AadConsolidation.exe\" -url jdbc:postgresql://localhost:2282/postgres -schema yellowdog_measure -password CastAIP -remote_url jdbc:postgresql://localhost:2282/postgres -remote_schema yellowdog_central -remote_password CastAIP"
+        bat "\"C:\\Program Files\\CAST\\8.3\\AAD\\CLI\\AadConsolidation.exe\" -url jdbc:postgresql://localhost:2282/postgres -schema sandbox838_measure -password CastAIP -remote_url jdbc:postgresql://localhost:2282/postgres -remote_schema sandbox838_central -remote_password CastAIP"
         bat "curl -u admin:admin -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
     }
 
