@@ -11,7 +11,7 @@ node ('master') {
     stage ('CAST-Packaging') {
         echo '-- Packaging and Delivery of Source Code --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat" "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
-    }
+    } 
     
     stage ('CAST-Analysis') {
         echo '-- Analyze Application --'
