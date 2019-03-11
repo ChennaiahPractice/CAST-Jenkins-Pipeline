@@ -22,8 +22,18 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
             print('First attempt succeeded!')
             # Get only a portion of returned JSON
-            _resultsFull = _data.json()
-            _results = _resultsFull[0]['applicationResults']
+            _resultsFull = _data.json()[0]['applicationResults']
+            _resultsTemp = '[{'
+            idx = 0
+            for item in _resultsFull:
+                idx += 1
+                _resultsTemp = _resultsTemp + "'" + item['reference']['name'] + "': "
+                _resultsTemp = _resultsTemp + str(item['result']['grade'])
+                if len(_resultsFull) > idx:
+                      _resultsTemp = _resultsTemp + ', '
+            _resultsTemp = _resultsTemp + '}]'
+            _results = json.dumps(_resultsTemp)
+            print (_results)
         except Exception as e:
             print('First attempt to connect failed. Exception occured.')
             print(e)
@@ -31,11 +41,19 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             time.sleep(5)
             print('Try connecting again...')
             try:
-                _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
-                print('Second and final attempt succeeded!')
-                # Get only a portion of returned JSON
-                _resultsFull = _data.json()
-                _results = _resultsFull[0]['applicationResults']
+               # Get only a portion of returned JSON
+               _resultsFull = _data.json()[0]['applicationResults']
+               _resultsTemp = '[{'
+               idx = 0
+               for item in _resultsFull:
+                   idx += 1
+                   _resultsTemp = _resultsTemp + "'" + item['reference']['name'] + "': "
+                   _resultsTemp = _resultsTemp + str(item['result']['grade'])
+                   if len(_resultsFull) > idx:
+                         _resultsTemp = _resultsTemp + ', '
+               _resultsTemp = _resultsTemp + '}]'
+               _results = json.dumps(_resultsTemp)
+               print (_results)
             except Exception as e:
                 print('Second attempt to connect failed. Exception occurred again.')
                 print(e)
