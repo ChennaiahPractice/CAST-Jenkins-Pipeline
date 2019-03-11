@@ -5,7 +5,7 @@ node ('master') {
         }
         dir('Webstore') {
            git credentialsId: 'Github-prabinovich', url: 'https://github.com/prabinovich/WebStore.git'
-        }
+        } 
     }
     
     stage ('CAST-Packaging') {
