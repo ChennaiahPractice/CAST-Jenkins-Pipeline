@@ -7,11 +7,10 @@ import time
 
 BUS_CRITERIA = {}
 
-def check_rule(_apiurl, _auth, _appname, _rule):
+def queryCastRestAPI(_apiurl, _auth, _appname, _report):
     _headers = {'Accept':'application/json'}
 
-    if _rule == "new_vs_old":
-        _resturi = 'AAD/results?select=(evolutionSummary)&quality-indicators=(60017)&snapshots=(-1)&applications=(' +_appname + ')'
+    if _report == "summary":
         _resturi = 'AAD/results?quality-indicators=(60014,60016)&snapshots=-1&applications=' +_appname 
      
         try:
@@ -35,26 +34,12 @@ def check_rule(_apiurl, _auth, _appname, _rule):
                 print('Second attempt to connect failed. Exception occured again.')
                 print(e)
                 return(2)
-        try:
-            _results = (BUS_CRITERIA[0])
-        except Exception as e:
-            print('Exception occured')
-            print(e)
-            return(2)             
-        _data = _results.get('applicationResults')
-        _results = _data[0].get('result')
-        _added =    _results.get('evolutionSummary').get('addedCriticalViolations')
-        _removed =  _results.get('evolutionSummary').get('removedCriticalViolations')
-        print(str(_added) + ' violations added, and  ' + str(_removed) + ' were removed')
-        if _added <= _removed:
-            print(str(_added) + ' were added and ' + str(_removed) + ' were removed')
-            return(0)
-        else:
-            print('CAST AIP flagged violations in build')
-            return(1)      
+            
+        return (_data)
     else:
-        print("Incorrect arguments - unknown rule specified")
-        return(2)
+        print("Incorrect arguments - unknown report specified")
+        _data = 'print json.dumps({'Error': 'Unknown Report'}, sort_keys=True, indent=4, separators=(',', ': '))
+        return(_data)
 
 
 if __name__ == "__main__":
