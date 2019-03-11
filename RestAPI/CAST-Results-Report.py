@@ -13,7 +13,7 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
     _headers = {'Accept':'application/json'}
 
     if _report == "summary":
-        _resturi = 'AAD/results?quality-indicators=(60014,60016)&snapshots=-1&applications=' +_appname 
+        _resturi = 'AAD/results?quality-indicators=(60011,60012,60013,60014,60016,60017)&snapshots=-1&applications=' +_appname 
      
         try:
             print('Credentials: ', _auth)
