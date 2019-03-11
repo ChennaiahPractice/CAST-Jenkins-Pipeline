@@ -4,6 +4,8 @@ import sys
 import argparse
 import requests
 import time
+import json
+from json2html import *
 
 BUS_CRITERIA = {}
 
@@ -19,7 +21,7 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             print('First attempt to connect...')
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
             print('First attempt succeeded!')
-            BUS_CRITERIA = _data.json()
+            _results = _data.json()
         except Exception as e:
             print('First attempt to connect failed. Exception occured.')
             print(e)
@@ -29,17 +31,16 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             try:
                 _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
                 print('Second and final attempt succeeded!')
-                BUS_CRITERIA = _data.json()
+                _results = _data.json()
             except Exception as e:
                 print('Second attempt to connect failed. Exception occured again.')
                 print(e)
-                return(2)
-            
-        return (_data)
+                _results = json.dumps({'Error': 'Unable to connect'}, sort_keys=True, indent=4, separators=(',', ': '))
     else:
         print("Incorrect arguments - unknown report specified")
-        _data = 'print json.dumps({'Error': 'Unknown Report'}, sort_keys=True, indent=4, separators=(',', ': '))
-        return(_data)
+        _results = json.dumps({'Error': 'Unknown Report'}, sort_keys=True, indent=4, separators=(',', ': '))
+   
+    return(_results)
 
 
 if __name__ == "__main__":
@@ -57,6 +58,13 @@ if __name__ == "__main__":
     _results = parser.parse_args()
     _auth = (_results.username, _results.password)
 
-    jsonResults = queryCastRestAPI(_results.connection, _auth, _results.appname, _results.report)
-    print('exit code is ' + str(_result_code))
-    sys.exit(_result_code)
+    _jsonResults = queryCastRestAPI(_results.connection, _auth, _results.appname, _results.report)
+    print('Results: ' + str(_jsonResults))
+    
+    f = open('index.html','w')
+    f.write('<html><head></head><body></body>')
+    f.write(json2html.convert(json = _jsonResults))
+    f.write('</html>')
+    f.close()
+    sys.exit(0)
+

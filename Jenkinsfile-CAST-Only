@@ -35,5 +35,9 @@ node ('master') {
             bat "curl.exe -u ${USR1}:${PWd1} -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
         }
     }
+    
+    stage('CAST-Publish HTML Report'){
+    	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
+    }
 
 }
