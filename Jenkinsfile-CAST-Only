@@ -1,11 +1,11 @@
 node ('master') {
     stage ('CAST-Get Code') {
-        dir('CAST-Scripts') {
+        /*dir('CAST-Scripts') {
            git branch: 'master', credentialsId: 'Github-prabinovich', url: 'https://github.com/prabinovich/CAST-Jenkins-Pipeline.git'
         }
         dir('Webstore') {
            git credentialsId: 'Github-prabinovich', url: 'https://github.com/prabinovich/WebStore.git'
-        }
+        }*/
     }
     
     /*
@@ -26,14 +26,14 @@ node ('master') {
     */
     
     stage('CAST-Publish Results'){
-        echo "-- Consolidate Snapshot --"        
+        /*echo "-- Consolidate Snapshot --"        
         withCredentials([usernamePassword(credentialsId: 'CAST-DB-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
             bat "\"C:\\Program Files\\CAST\\8.3\\AAD\\CLI\\AadConsolidation.exe\" -url jdbc:postgresql://localhost:2282/postgres -schema sandbox838_measure -password ${PWd1} -remote_url jdbc:postgresql://localhost:2282/postgres -remote_schema sandbox838_central -remote_password ${PWd1}"
         }
         
         withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
             bat "curl.exe -u ${USR1}:${PWd1} -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
-        }
+        }*/
     }
     
     stage('CAST-Publish HTML Report'){
