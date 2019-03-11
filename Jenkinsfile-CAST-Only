@@ -37,7 +37,10 @@ node ('master') {
     }
     
     stage('CAST-Publish HTML Report'){
-    	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
+    	dir('CAST-Reports') {
+    		bat "python ./RestAPI/Check-CAST-Results.py --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore"
+    		publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
+   		}
     }
 
 }

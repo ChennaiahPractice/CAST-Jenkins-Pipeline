@@ -62,9 +62,9 @@ if __name__ == "__main__":
     print('Results: ' + str(_jsonResults))
     
     f = open('index.html','w')
-    f.write('<html><head></head><body></body>')
+    #f.write('<html><head></head><body></body>')
     f.write(json2html.convert(json = _jsonResults))
-    f.write('</html>')
+    #f.write('</html>')
     f.close()
     sys.exit(0)
 
