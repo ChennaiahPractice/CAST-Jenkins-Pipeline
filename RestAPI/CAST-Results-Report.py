@@ -21,7 +21,9 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             print('First attempt to connect...')
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
             print('First attempt succeeded!')
-            _results = _data.json()
+            # Get only a portion of returned JSON
+            _resultsFull = _data.json()
+            _results = _resultsFull[0]['applicationResults']
         except Exception as e:
             print('First attempt to connect failed. Exception occured.')
             print(e)
@@ -31,9 +33,11 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             try:
                 _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)
                 print('Second and final attempt succeeded!')
-                _results = _data.json()
+                # Get only a portion of returned JSON
+                _resultsFull = _data.json()
+                _results = _resultsFull[0]['applicationResults']
             except Exception as e:
-                print('Second attempt to connect failed. Exception occured again.')
+                print('Second attempt to connect failed. Exception occurred again.')
                 print(e)
                 _results = json.dumps({'Error': 'Unable to connect'}, sort_keys=True, indent=4, separators=(',', ': '))
     else:
