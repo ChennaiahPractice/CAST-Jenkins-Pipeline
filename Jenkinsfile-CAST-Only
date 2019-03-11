@@ -37,7 +37,7 @@ node ('master') {
     }
     
     stage('CAST-Publish HTML Report'){
-    	dir('CAST-Reports') {
+    	dir('CAST-Report') {
     		bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Results-Report.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore'
     	}
     		publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'CAST-Report', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
