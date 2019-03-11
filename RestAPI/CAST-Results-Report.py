@@ -23,16 +23,9 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             print('First attempt succeeded!')
             # Get only a portion of returned JSON
             _resultsFull = _data.json()[0]['applicationResults']
-            _resultsTemp = '[{'
-            idx = 0
+            _results = {}
             for item in _resultsFull:
-                idx += 1
-                _resultsTemp = _resultsTemp + "'" + item['reference']['name'] + "': "
-                _resultsTemp = _resultsTemp + str(item['result']['grade'])
-                if len(_resultsFull) > idx:
-                      _resultsTemp = _resultsTemp + ', '
-            _resultsTemp = _resultsTemp + '}]'
-            _results = json.dumps(_resultsTemp)
+                _results[item['reference']['name']] = item['result']['grade']
             print (_results)
         except Exception as e:
             print('First attempt to connect failed. Exception occured.')
@@ -43,16 +36,9 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
             try:
                # Get only a portion of returned JSON
                _resultsFull = _data.json()[0]['applicationResults']
-               _resultsTemp = '[{'
-               idx = 0
+               _results = {}
                for item in _resultsFull:
-                   idx += 1
-                   _resultsTemp = _resultsTemp + "'" + item['reference']['name'] + "': "
-                   _resultsTemp = _resultsTemp + str(item['result']['grade'])
-                   if len(_resultsFull) > idx:
-                         _resultsTemp = _resultsTemp + ', '
-               _resultsTemp = _resultsTemp + '}]'
-               _results = json.dumps(_resultsTemp)
+                   _results[item['reference']['name']] = item['result']['grade']
                print (_results)
             except Exception as e:
                 print('Second attempt to connect failed. Exception occurred again.')
