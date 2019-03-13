@@ -13,7 +13,7 @@ node ('master') {
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_ImportAssessmentModel.bat" "profile=sandbox838" "filepath=%WORKSPACE%\\CAST-Scripts\\QualityModels\\CAST 8.3.8 Assessment Model - SQL Injection Disabled.pmx"'
     }
     
-    stage ('CAST-Packaging') {
+    /*stage ('CAST-Packaging') {
         echo '-- Packaging and Delivery of Source Code --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat" "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
     } 
@@ -26,7 +26,7 @@ node ('master') {
     stage ('CAST-Snapshot') {
         echo '-- Generate Snapshot --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_GenerateSnapshot.bat" "profile=sandbox838" "app=Webstore" "version=version %BUILD_NUMBER%"'
-    }
+    }*/
     
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
