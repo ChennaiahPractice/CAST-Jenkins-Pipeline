@@ -50,5 +50,5 @@ if __name__ == "__main__":
     _fResults = getAddedViolationCount(_params.connection, _auth, _params.appname, _params.ruleid)
     print('Added Violations: ' + str(_fResults))
 
-    sys.exit(0)
+    sys.exit(_fResults)
 
