@@ -8,17 +8,17 @@ node ('master') {
         } 
     }
     
-    /*stage ('CAST-Assessment Model') {
-        echo '-- Enable Corporate Assessment Model --'
-        bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat" "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
-    }*/
+    stage ('CAST-Assessment Model') {
+        echo '-- Enable Assessment Model --'
+        bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_ImportAssessmentModel.bat" "profile=sandbox838" "filepath=%WORKSPACE%\\CAST-Scripts\\QualityModels\\CAST 8.3.8 Assessment Model - SQL Injection Disabled.pmx"'
+    }
     
     stage ('CAST-Packaging') {
         echo '-- Packaging and Delivery of Source Code --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat" "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
     } 
     
-    /*stage ('CAST-Analysis') {
+    stage ('CAST-Analysis') {
         echo '-- Analyze Application --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_Analyze.bat" "profile=sandbox838" "app=Webstore"'
     }
@@ -26,12 +26,12 @@ node ('master') {
     stage ('CAST-Snapshot') {
         echo '-- Generate Snapshot --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_GenerateSnapshot.bat" "profile=sandbox838" "app=Webstore" "version=version %BUILD_NUMBER%"'
-    }*/
+    }
     
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
         withCredentials([usernamePassword(credentialsId: 'CAST-DB-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
-            bat "\"C:\\Program Files\\CAST\\8.3\\AAD\\CLI\\AadConsolidation.exe\" -url jdbc:postgresql://localhost:2282/postgres -schema sandbox838_measure -password ${PWd1} -remote_url jdbc:postgresql://localhost:2282/postgres -remote_schema sandbox838_central -remote_password ${PWd1}"
+            bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\AAD_ConsolidateSnapshot.bat" "measure=sandbox838_measure" "central=sandbox838_central" "password=${PWd1}"'
         }
         
         withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {

@@ -16,9 +16,8 @@ if not defined version (echo 'version' parameter not provided) & goto ErrorExit
 REM Setup CAST environment
 SET mypath=%~dp0
 SET currPath=%mypath:~0,-1%
-echo Current directory: "%currPath%"
-
 call "%currPath%/setupCASTEnvironment.bat"
+
 set cli=%CAST_HOME%/CAST-MS-cli.exe
 set log=%CAST_LOG_ROOT%/%app%
 

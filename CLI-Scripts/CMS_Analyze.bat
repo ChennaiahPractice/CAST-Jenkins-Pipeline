@@ -11,10 +11,15 @@ GOTO parse
 if not defined profile (echo 'profile' parameter not provided) & goto ErrorExit
 if not defined app (echo 'app' parameter not provided) & goto ErrorExit
 
-set cli=C:/Program Files/CAST/8.3/CAST-MS-cli.exe
-set log=c:/cast/logs/%app%
+REM Setup CAST environment
+SET mypath=%~dp0
+SET currPath=%mypath:~0,-1%
+call "%currPath%/setupCASTEnvironment.bat"
 
-"%cli%" RunAnalysis -connectionProfile %profile% -appli %app% -logRootPath %log%
+set cli=%CAST_HOME%/CAST-MS-cli.exe
+set log=%CAST_LOG_ROOT%/%app%
+
+"%cli%" RunAnalysis -connectionProfile %profile% -appli %app% -logRootPath "%log%"
 exit /b %ERRORLEVEL%
 
 :ErrorExit
