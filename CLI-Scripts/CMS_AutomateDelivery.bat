@@ -18,11 +18,11 @@ SET mypath=%~dp0
 SET currPath=%mypath:~0,-1%
 echo Current directory: "%currPath%"
 
-%currPath%/setupCASTEnvironment.bat
+call "%currPath%/setupCASTEnvironment.bat"
 set cli=%CAST_HOME%/CAST-MS-cli.exe
 set log=%CAST_LOG_ROOT%/%app%
 
-"%cli%" AutomateDelivery -connectionProfile %profile% -appli %app% -fromVersion "%fromVersion%" -version "%version%" -logRootPath %log%
+"%cli%" AutomateDelivery -connectionProfile %profile% -appli %app% -fromVersion "%fromVersion%" -version "%version%" -logRootPath "%log%"
 exit /b %ERRORLEVEL%
 
 :ErrorExit
