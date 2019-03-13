@@ -21,6 +21,7 @@ set cli=%CAST_HOME%/CAST-MS-cli.exe
 set log=%CAST_LOG_ROOT%/%app%
 
 "%cli%" ImportAssessmentModel -connectionProfile %profile% -file "%filepath%" -logRootPath "%log%"
+"%cli%" RemoveUnassociatedAssessmentModels -connectionProfile %profile% -logRootPath "%log%"
 exit /b %ERRORLEVEL%
 
 :ErrorExit
