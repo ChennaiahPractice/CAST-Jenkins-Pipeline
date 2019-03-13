@@ -9,6 +9,7 @@ GOTO parse
 :endparse
 
 if not defined profile (echo 'profile' parameter not provided) & goto ErrorExit
+if not defined app (echo 'app' parameter not provided) & goto ErrorExit
 if not defined filepath (echo 'filepath' parameter not provided) & goto ErrorExit
 
 REM Setup CAST environment

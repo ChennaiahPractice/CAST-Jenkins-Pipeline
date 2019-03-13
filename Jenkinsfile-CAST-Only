@@ -10,7 +10,7 @@ node ('master') {
     
     stage ('CAST-Assessment Model') {
         echo '-- Enable Assessment Model --'
-        bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_ImportAssessmentModel.bat" "profile=sandbox838" "filepath=%WORKSPACE%\\CAST-Scripts\\QualityModels\\CAST 8.3.8 Assessment Model - SQL Injection Disabled.pmx"'
+        bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_ImportAssessmentModel.bat" "profile=sandbox838" "app=Webstore" "filepath=%WORKSPACE%\\CAST-Scripts\\QualityModels\\CAST 8.3.8 Assessment Model - SQL Injection Disabled.pmx"'
     }
     
     /*stage ('CAST-Packaging') {
@@ -31,11 +31,11 @@ node ('master') {
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
         withCredentials([usernamePassword(credentialsId: 'CAST-DB-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
-            bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\AAD_ConsolidateSnapshot.bat" "measure=sandbox838_measure" "central=sandbox838_central" "password=${PWd1}"'
+            bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\AAD_ConsolidateSnapshot.bat" "measure=sandbox838_measure" "central=sandbox838_central" "password=${PWD1}"'
         }
         
         withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
-            bat "curl.exe -u ${USR1}:${PWd1} -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
+            bat "curl.exe -u ${USR1}:${PWD1} -H \"Accept: application/json\" http://localhost:8080/CAST-Health-Engineering-838/rest/server/reload"
         }
     }
     
