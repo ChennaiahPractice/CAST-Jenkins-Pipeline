@@ -21,7 +21,7 @@ node ('master') {
     stage ('CAST-Snapshot') {
         echo '-- Generate Snapshot --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_GenerateSnapshot.bat" "profile=sandbox838" "app=Webstore" "version=version %BUILD_NUMBER%"'
-    }
+    }*/
     
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
@@ -39,7 +39,7 @@ node ('master') {
     		bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Results-Report.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore'
     	}
     		publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'CAST-Report', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
-    }*/
+    }
     
     stage('CAST-Check Success'){
     	bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Check-Rule.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore --ruleid=7742'
