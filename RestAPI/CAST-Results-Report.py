@@ -7,8 +7,6 @@ import time
 import json
 from json2html import *
 
-BUS_CRITERIA = {}
-
 def queryCastRestAPI(_apiurl, _auth, _appname, _report):
     _headers = {'Accept':'application/json'}
 
@@ -16,7 +14,6 @@ def queryCastRestAPI(_apiurl, _auth, _appname, _report):
         _resturi = 'AAD/results?quality-indicators=(60011,60012,60013,60014,60016,60017)&snapshots=-1&applications=' +_appname 
      
         try:
-            print('Credentials: ', _auth)
             print('Rest Call: ', _apiurl+'/'+_resturi)
             print('First attempt to connect...')
             _data = requests.get(_apiurl+'/'+_resturi, headers=_headers, auth=_auth, verify=False, timeout=10)

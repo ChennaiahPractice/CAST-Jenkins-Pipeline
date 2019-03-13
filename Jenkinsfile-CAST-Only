@@ -40,5 +40,8 @@ node ('master') {
     	}
     		publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'CAST-Report', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
     }
-
+    
+    stage('CAST-Check Success'){
+    	bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Check-Rules.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore --ruleid=7742'
+    }
 }
