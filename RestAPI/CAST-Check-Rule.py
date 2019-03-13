@@ -49,6 +49,10 @@ if __name__ == "__main__":
 
     _fResults = getAddedViolationCount(_params.connection, _auth, _params.appname, _params.ruleid)
     print('Added Violations: ' + str(_fResults))
-
+    if _fRestuls != 0: 
+        print('!!!Check failed!!!') 
+    else:
+        print('Check succeeded')
+    
     sys.exit(_fResults)
 
