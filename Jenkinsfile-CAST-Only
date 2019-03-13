@@ -8,12 +8,17 @@ node ('master') {
         } 
     }
     
-    /*stage ('CAST-Packaging') {
+    /*stage ('CAST-Assessment Model') {
+        echo '-- Enable Corporate Assessment Model --'
+        bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat" "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
+    }*/
+    
+    stage ('CAST-Packaging') {
         echo '-- Packaging and Delivery of Source Code --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_AutomateDelivery.bat" "profile=sandbox838" "app=Webstore" "fromVersion=Baseline" "version=version %BUILD_NUMBER%"'
     } 
     
-    stage ('CAST-Analysis') {
+    /*stage ('CAST-Analysis') {
         echo '-- Analyze Application --'
         bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_Analyze.bat" "profile=sandbox838" "app=Webstore"'
     }
@@ -35,6 +40,7 @@ node ('master') {
     }
     
     stage('CAST-Publish HTML Report'){
+ 		echo "-- Create CAST Report in Jenkins --"    
     	dir('CAST-Report') {
     		bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Results-Report.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore'
     	}
@@ -42,6 +48,7 @@ node ('master') {
     }
     
     stage('CAST-Check Success'){
+    	echo "-- Quality Gate - Check Analysis Results --"
     	bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Check-Rule.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore --ruleid=7742'
     }
 }

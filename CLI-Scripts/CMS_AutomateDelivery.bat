@@ -13,8 +13,10 @@ if not defined app (echo 'app' parameter not provided) & goto ErrorExit
 if not defined version (echo 'fromVersion' parameter not provided) & goto ErrorExit
 if not defined version (echo 'version' parameter not provided) & goto ErrorExit
 
-set cli=C:/Program Files/CAST/8.3/CAST-MS-cli.exe
-set log=c:/cast/logs/%app%
+REM Setup CAST environment
+call setupCASTEnvironment.bat
+set cli=%CAST_HOME%/CAST-MS-cli.exe
+set log=%CAST_LOG_ROOT%/%app%
 
 "%cli%" AutomateDelivery -connectionProfile %profile% -appli %app% -fromVersion "%fromVersion%" -version "%version%" -logRootPath %log%
 exit /b %ERRORLEVEL%
