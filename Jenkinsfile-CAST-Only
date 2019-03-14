@@ -36,7 +36,7 @@ node ('master') {
     stage('CAST-Publish Results'){
         echo "-- Consolidate Snapshot --"        
         withCredentials([usernamePassword(credentialsId: 'CAST-DB-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
-            bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\AAD_ConsolidateSnapshot.bat" "measure=sandbox838_measure" "central=sandbox838_central" "password=$PWD1"'
+            bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\AAD_ConsolidateSnapshot.bat" "measure=sandbox838_measure" "central=sandbox838_central" "password=%PWD1%"'
         }
         
         withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
