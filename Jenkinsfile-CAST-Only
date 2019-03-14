@@ -47,13 +47,17 @@ node ('master') {
     stage('CAST-Publish HTML Report'){
  		echo "-- Create CAST Report in Jenkins --"    
     	dir('CAST-Report') {
-    		bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Results-Report.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore'
+    		withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
+    			bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Results-Report.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=%USR1% --password=%PWD1% --appname=Webstore'
+    		}
     	}
     		publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'CAST-Report', reportFiles: 'index.html', reportName: 'CAST Analysis Report', reportTitles: ''])
     }
     
     stage('CAST-Check Success'){
     	echo "-- Quality Gate - Check Analysis Results --"
-    	bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Check-Rule.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=cast --password=cast --appname=Webstore --ruleid=7742'
+    	withCredentials([usernamePassword(credentialsId: 'CAST-Dashboard-Keys', passwordVariable: 'PWD1', usernameVariable: 'USR1')]) {
+    		bat 'python "%WORKSPACE%\\CAST-Scripts\\RestAPI\\CAST-Check-Rule.py" --connection=http://localhost:8080/CAST-Health-Engineering-838/rest --username=%USR1% --password=%PWD1% --appname=Webstore --ruleid=7742'
+    	}
     }
 }
