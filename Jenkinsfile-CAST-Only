@@ -8,15 +8,17 @@ node ('master') {
         } 
     }
     
-    /*stage ('CAST-Assessment Model') {
+    stage ('CAST-Assessment Model') {
     	try {
         	echo '-- Enable Assessment Model --'
         	bat '"%WORKSPACE%\\CAST-Scripts\\CLI-Scripts\\CMS_ImportAssessmentModel.bat" "profile=sandbox838" "app=Webstore" "filepath=%WORKSPACE%\\CAST-Scripts\\QualityModels\\CAST 8.3.8 Assessment Model - SQL Injection Disabled.pmx"'
     	}
     	catch (err) {
+    		echo '*** Assessment model import failed ***'
     		echo err
+    		echo '**************************************'
     	}
-    }*/
+    }
     
     /*stage ('CAST-Packaging') {
         echo '-- Packaging and Delivery of Source Code --'
