@@ -12,6 +12,8 @@ if not defined measure (echo 'measure' parameter not provided) & goto ErrorExit
 if not defined central (echo 'central' parameter not provided) & goto ErrorExit
 if not defined password (echo 'password' parameter not provided) & goto ErrorExit
 
+echo Password: %passwrord%
+
 REM Setup CAST environment
 SET mypath=%~dp0
 SET currPath=%mypath:~0,-1%
