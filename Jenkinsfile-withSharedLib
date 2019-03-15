@@ -6,5 +6,5 @@ CastAnalysisPipeline ([
 	measure: 'sandbox838_measure',
 	central: 'sandbox838_central',
 	castUrl: 'http://localhost:8080/CAST-Health-Engineering-838',
-	appGitUrl: 'https://github.com/prabinovich/CAST-Jenkins-Pipeline.git'
+	appgiturl: 'https://github.com/prabinovich/CAST-Jenkins-Pipeline.git'
 	])
