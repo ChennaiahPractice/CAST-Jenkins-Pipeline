@@ -1,3 +1,4 @@
 @Library('cast-pipeline-shared-lib@master') _
 
-CastAnalysisPipeline (appname: 'Webstore')
+CastAnalysisPipeline (appname: 'Webstore'
+	cmsprofile: 'sandbox838')
