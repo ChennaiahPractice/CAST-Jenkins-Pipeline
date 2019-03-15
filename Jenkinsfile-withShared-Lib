@@ -1,0 +1,3 @@
+@Library('cast-pipeline-shared-lib') _
+
+CastAnalysisPipeline();
