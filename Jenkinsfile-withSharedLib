@@ -2,4 +2,9 @@
 
 CastAnalysisPipeline ([
 	appname: 'Webstore',
-	cmsprofile: 'sandbox838'])
+	cmsprofile: 'sandbox838',
+	measure: 'sandbox838_measure',
+	central: 'sandbox838_central',
+	castUrl: 'http://localhost:8080/CAST-Health-Engineering-838',
+	appGitUrl: 'https://github.com/prabinovich/CAST-Jenkins-Pipeline.git'
+	])
