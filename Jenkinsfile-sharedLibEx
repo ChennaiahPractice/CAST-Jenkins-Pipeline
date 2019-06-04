@@ -1,0 +1,21 @@
+@Library('cast-pipeline-shared-lib@master') _
+
+node ('cast-agent') {
+    stage ('CAST-Get App Code') {
+		dir('App-source') {
+           git branch: 'develop', credentialsId: 'cast-serviceid', url: 'https://git.orgx.net/scm/~p123456/appx-web.git'
+        } 
+		 dir('App-dep') {
+           git branch: 'develop', credentialsId: 'cast-serviceid', url: 'https://git.orgx.net/scm/~p123456/appx-lib.git'
+        } 
+    }
+    
+	CastAnalysisPipeline ([
+		appname: 'APPX - Super Cool App',
+		cmsprofile: 'appX',
+		measure: 'orgY_measure',
+		central: 'appX_central',
+        dmtpackage: 'packageconfigs2',
+        notificationemail: 'email@domain.com'
+	])
+}
